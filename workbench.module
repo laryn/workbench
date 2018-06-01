@@ -107,7 +107,7 @@ function workbench_block_info() {
 function workbench_block_view($delta = '') {
   $items = module_invoke_all('workbench_block');
   if (empty($items)) {
-    return;
+    return array();
   }
   $block = array(
     'subject' => '',
