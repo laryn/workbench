@@ -214,6 +214,9 @@ function workbench_ctools_plugin_directory($owner, $plugin_type) {
   if ($owner == 'page_manager') {
     return 'plugins/page_manager/' . $plugin_type;
   }
+  elseif ($owner == 'ctools' && $plugin_type == 'content_types') {
+    return 'plugins/' . $plugin_type;
+  }
 }
 
 /**
