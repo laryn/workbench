@@ -9,21 +9,17 @@ function workbench_myworkbench_page_manager_tasks() {
   return array(
     // This is a 'page' task and will fall under the page admin UI
     'task type' => 'page',
-
     'title' => t('My Workbench'),
     'admin title' => t('The Workbench landing page.'),
     'admin description' => t('When enabled, this overrides the default Workbench page for <em>admin/workbench</em>. If no variant is selected, the default "My Workbench" will be shown. See http://drupal.org/node/1226174 for more information.'),
     'admin path' => 'admin/workbench',
-
     // Menu hooks so that we can alter the node/%node menu entry to point to us.
     'hook menu alter' => 'workbench_myworkbench_menu_alter',
-
     // This is task uses 'context' handlers and must implement these to give the
     // handler data it needs.
     'handler type' => 'context',
-
     // Allow this to be enabled or disabled:
-    'disabled' => variable_get('workbench_myworkbench_disabled', TRUE),
+    'disabled' => config_get('workbench.settings', 'workbench_myworkbench_disabled'),
     'enable callback' => 'workbench_myworkbench_enable',
   );
 }
@@ -35,12 +31,13 @@ function workbench_myworkbench_page_manager_tasks() {
  */
 function workbench_myworkbench_menu_alter(&$items, $task) {
 
-  if (variable_get('workbench_myworkbench_disabled', TRUE)) {
+  if (config_get('workbench.settings', 'workbench_myworkbench_disabled')) {
     return;
   }
 
   $callback = $items['admin/workbench']['page callback'];
   // Override the node edit handler for our purpose.
+  // TODO This variable was probably removed in Backdrop without replacement.
   if ($callback == 'workbench_content' || variable_get('page_manager_override_anyway', FALSE)) {
     $items['admin/workbench']['page callback'] = 'workbench_myworkbench';
     $items['admin/workbench']['file path'] = $task['path'];
@@ -50,7 +47,7 @@ function workbench_myworkbench_menu_alter(&$items, $task) {
   else {
     //variable_set('workbench_myworkbench_disabled', TRUE);
     if (!empty($GLOBALS['page_manager_enabling_workbench'])) {
-      drupal_set_message(t('Page manager module is unable to enable Workbench because some other module already has overridden with %callback.', array('%callback' => $callback)), 'warning');
+      backdrop_set_message(t('Page manager module is unable to enable Workbench because some other module already has overridden with %callback.', array('%callback' => $callback)), 'warning');
     }
     return;
   }
@@ -91,7 +88,7 @@ function workbench_myworkbench() {
  * Callback to enable/disable the page from the UI.
  */
 function workbench_myworkbench_enable($cache, $status) {
-  variable_set('workbench_myworkbench_disabled', $status);
+  config_set('workbench.settings', 'workbench_myworkbench_disabled', $status);
   // Set a global flag so that the menu routine knows it needs
   // to set a message if enabling cannot be done.
   if (!$status) {

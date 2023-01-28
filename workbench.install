@@ -1,0 +1,25 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the workbench module.
+ *
+ */
+
+
+/**
+ * Migrate workbench variables to config.
+ */
+function workbench_update_1000() {
+  $config = config('workbench.settings');
+  $config->set('workbench_myworkbench_disabled', update_variable_get('workbench_myworkbench_disabled', TRUE));
+  $config->save();
+
+  update_variable_del('workbench_myworkbench_disabled');
+}
+
+/**
+ * Implements hook_install().
+ */
+function workbench_install() {
+  // Dynamically generated variable data was detected.
+}

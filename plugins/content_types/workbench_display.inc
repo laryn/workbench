@@ -15,6 +15,10 @@ $plugin = array(
   'required context' => new ctools_context_required(t('Node'), 'node'),
 );
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function workbench_display_render($subtype, $conf, $args, $context) {
   $block = new stdClass();
 

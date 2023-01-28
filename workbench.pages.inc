@@ -22,7 +22,7 @@ function workbench_content() {
   // Allow other modules to add content here.
   $output['#attributes'] = array('class' => array('admin', 'my-workbench'));
   $output['#attached'] = array(
-    'css' => array(drupal_get_path('module', 'workbench') . '/css/workbench.my-workbench.css'),
+    'css' => array(backdrop_get_path('module', 'workbench') . '/css/workbench.my-workbench.css'),
   );
   $output['#theme'] = 'workbench_element';
   // This left column is given a width of 35% by workbench.myworkbench.css.
@@ -43,18 +43,24 @@ function workbench_content() {
   $output['workbench_recent_content'] = array(
     '#view' => 'workbench_recent_content',
     '#view_display' => 'block_1',
-    '#attributes' => array('class' => array('clearfix'), 'style' => array('clear: both;')),
+    '#attributes' => array(
+      'class' => array('clearfix'),
+      'style' => array('clear: both;'),
+    ),
     '#theme' => 'workbench_element',
   );
 
   // Allow other modules to alter the default page.
-  drupal_alter('workbench_content', $output);
+  backdrop_alter('workbench_content', $output);
 
   // Transform the Views into markup.
   // @see views_embed_view()
   foreach (element_children($output) as $key) {
     if (isset($output[$key]['#view']) && $view = views_get_view($output[$key]['#view'])) {
-      $output[$key] += array('#markup' => '', '#view_display' => 'default');
+      $output[$key] += array(
+        '#markup' => '',
+        '#view_display' => 'default',
+      );
       $display_id = $output[$key]['#view_display'];
 
       // Build contextual links.
@@ -89,7 +95,7 @@ function workbench_create() {
   $output['workbench_create_default'] = _workbench_create();
 
   // Allow other modules to add content here.
-  drupal_alter('workbench_create', $output);
+  backdrop_alter('workbench_create', $output);
 
   return $output;
 }

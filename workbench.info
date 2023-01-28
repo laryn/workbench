@@ -1,7 +1,8 @@
 name = Workbench
 description = Workbench editorial suite.
 package = Workbench
-core = 7.x
+backdrop = 1.x
+type = module
 configure = admin/config/workbench/settings
 dependencies[] = ctools
 dependencies[] = views

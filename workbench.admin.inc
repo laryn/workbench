@@ -7,5 +7,4 @@
  *
  * This file is currently empty.
  */
-function workbench_admin() {
-}
+function workbench_admin() { }
